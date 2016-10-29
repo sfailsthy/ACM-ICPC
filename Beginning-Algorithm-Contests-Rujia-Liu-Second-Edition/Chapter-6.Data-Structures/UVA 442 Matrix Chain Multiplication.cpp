@@ -9,6 +9,12 @@ typedef pair<int,int> Matrix;
 
 int main()
 {
+#ifdef LOCAL
+    freopen("in.txt", "r", stdin);
+    freopen("out.txt","w",stdout);
+#endif
+    ios_base::sync_with_stdio(0);
+
     int n;
     cin>>n;
     Matrix ma[26];
