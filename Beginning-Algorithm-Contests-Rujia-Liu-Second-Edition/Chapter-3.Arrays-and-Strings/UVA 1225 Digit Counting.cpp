@@ -36,7 +36,7 @@ int main()
     return 0;
 }
 
-/////未经验证，应该是对的……
+/////////////
 #include <iostream>
 #include<utility>
 #include<queue>
