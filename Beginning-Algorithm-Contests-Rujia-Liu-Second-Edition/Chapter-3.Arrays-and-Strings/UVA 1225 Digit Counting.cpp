@@ -35,3 +35,36 @@ int main()
     }
     return 0;
 }
+
+/////未经验证，应该是对的……
+#include <iostream>
+#include<utility>
+#include<queue>
+#include<deque>
+#include<cstring>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+int main()
+{
+    int n,t;
+    cin>>t;
+    while(t--){
+        cin>>n;
+        int sum[10];
+        memset(sum,0,sizeof(sum));
+        for(int i=1;i<=n;i++){
+            int j=i;
+            while(j>0){
+                sum[j%10]++;
+                j=j/10;
+            }
+        }
+        for(int i=0;i<9;i++){
+            cout<<sum[i]<<" ";
+        }
+        cout<<sum[9]<<endl;
+    }
+    return 0;
+}
