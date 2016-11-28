@@ -1,0 +1,50 @@
+//created by sfailsthy 2016/11/28 20:41
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+#define INF 0x3f3f3f3f
+
+const int maxn =100+10;
+const int maxk =100000+10;
+int n,m;
+int A[maxn],C[maxn];
+int dp[maxk];
+
+void solve(){
+    memset(dp,-1,sizeof(dp));
+    dp[0]=0;
+
+    for(int i=0;i<n;i++){
+        for(int j=0;j<=m;j++){
+            if(dp[j]>=0){
+                dp[j]=C[i];
+            }
+            else if(j<A[i]||dp[j-A[i]]<=0){
+                dp[j]=-1;
+            }
+            else{
+                dp[j]=dp[j-A[i]]-1;
+            }
+        }
+    }
+
+    int res=0;
+    for(int i=1;i<=m;i++){
+        if(dp[i]>=0) res++;
+    }
+    printf("%d\n",res);
+}
+
+int main(){
+    while(scanf("%d%d",&n,&m)==2&&n){
+        for(int i=0;i<n;i++){
+            scanf("%d",&A[i]);
+        }
+        for(int i=0;i<n;i++){
+            scanf("%d",&C[i]);
+        }
+        solve();
+    }
+    return 0;
+}
