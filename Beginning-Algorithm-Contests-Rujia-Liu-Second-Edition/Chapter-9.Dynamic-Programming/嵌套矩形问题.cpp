@@ -10,6 +10,7 @@ int n;
 int a[maxn],b[maxn];
 int G[maxn][maxn];
 int d[maxn];
+//d[i]表示从i出发的最长路径的长度
 
 int dp(int i){
     int& ans=d[i];
