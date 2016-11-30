@@ -37,7 +37,7 @@ struct node{
 
 
 void solve(){
-    vector<node> left,right;
+    vector<node> left;
     for(int i=0;i<n;i++){
         for(int j=i+1;j<n;j++){
             left.push_back(node(s[i]+s[j],i,j));
