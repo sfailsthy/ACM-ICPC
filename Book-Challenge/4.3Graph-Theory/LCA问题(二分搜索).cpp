@@ -1,4 +1,7 @@
 //created by sfailsthy 2016/12/17 21:05
+/*预处理的时间复杂度为O(nlogn)
+每次查询的时间复杂度为O(logn)
+*/
 #include <cstdio>
 #include <iostream>
 #include <algorithm>
