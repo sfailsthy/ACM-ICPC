@@ -1,87 +1,72 @@
 //created by sfailsthy 2016/12/19 1:33
 #include <iostream>
-#include <cstdio>
-#include <queue>
 #include <vector>
-#include <algorithm>
 #include <cstring>
+#include <cstdio>
+#include <algorithm>
+#include <queue>
 using namespace std;
 
+#define INF 0x3f3f3f3f
 const int maxn =1e5+10;
-const int INF=1e9;
 
-struct Edge{
-    int from,to,color;
-    Edge(int from=0,int to=0,int color=0):from(from),to(to),color(color){}
+struct edge{
+    int to,color;
 };
 
-vector<Edge> edges;
-vector<int> G[maxn];//存以i为开头的边的编号
-
-void addEdge(int from,int to,int color){
-    edges.push_back(Edge(from,to,color));
-    int idx=edges.size()-1;
-    G[from].push_back(idx);
-}
-
-int n,m;
+vector<edge> G[maxn];
 int d[maxn];
 int vis[maxn];
+int n,m;
 
-//从终点逆向BFS，求出每个点到终点的最短距离
 void rev_bfs(){
-    memset(vis,0,sizeof(vis));
+    memset(d,-1,sizeof(d));
+    d[n]=0;
     queue<int> que;
-    vis[n-1]=1;
-    d[n-1]=0;
-    que.push(n-1);
+    que.push(n);
 
     while(!que.empty()){
-        int v=que.front();
+        int u=que.front();
         que.pop();
 
-        for(int i=0;i<G[v].size();i++){
-            int e=G[v][i];
-            int u=edges[e].to;
-            if(!vis[u]){
-                vis[u]=1;
-                d[u]=d[v]+1;
-                que.push(u);
-            }
+        for(int i=0;i<G[u].size();i++){
+            int v=G[u][i].to;
+            if(d[v]!=-1) continue;
+            d[v]=d[u]+1;
+            que.push(v);
         }
     }
 }
 
-
 void bfs(){
-    vector<int> ans;
     memset(vis,0,sizeof(vis));
-    vis[0]=1;
-
+    vis[1]=1;
     vector<int> next;
-    next.push_back(0);
+    next.push_back(1);
 
-    for(int i=0;i<d[0];i++){
-        int min_color=INF;
+    vector<int> ans;
+    for(int i=0;i<d[1];i++){
+        int temp=INF;
         for(int j=0;j<next.size();j++){
             int u=next[j];
             for(int k=0;k<G[u].size();k++){
-                int e=G[u][k];
-                int v=edges[e].to;
-                if(d[u]==d[v]+1){
-                    min_color=min(min_color,edges[e].color);
+                edge e=G[u][k];
+                int v=e.to,color=e.color;
+                if(d[v]==d[u]-1){
+                    temp=min(temp,color);
                 }
             }
         }
-        ans.push_back(min_color);
+
+        ans.push_back(temp);
 
         vector<int> next2;
         for(int j=0;j<next.size();j++){
             int u=next[j];
             for(int k=0;k<G[u].size();k++){
-                int e=G[u][k];
-                int v=edges[e].to;
-                if(d[u]==d[v]+1&&!vis[v]&&min_color==edges[e].color){
+                edge e=G[u][k];
+                int v=e.to,color=e.color;
+                if(d[v]==d[u]-1&&!vis[v]&&color==temp){
                     vis[v]=1;
                     next2.push_back(v);
                 }
@@ -100,16 +85,15 @@ void bfs(){
 
 int main(){
     while(scanf("%d%d",&n,&m)==2){
-        edges.clear();
-        for(int i=0;i<n;i++){
+        for(int i=1;i<=n;i++){
             G[i].clear();
         }
 
         for(int i=0;i<m;i++){
-            int u,v,c;
-            scanf("%d%d%d",&u,&v,&c);
-            addEdge(u-1,v-1,c);
-            addEdge(v-1,u-1,c);
+            int a,b,c;
+            scanf("%d%d%d",&a,&b,&c);
+            G[a].push_back((edge){b,c});
+            G[b].push_back((edge){a,c});
         }
         rev_bfs();
         bfs();
