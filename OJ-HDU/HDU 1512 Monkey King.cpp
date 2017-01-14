@@ -2,16 +2,16 @@
 #include <iostream>
 #include <cstdio>
 #include <queue>
-#include <algorithm>
 #include <cstring>
+#include <algorithm>
 using namespace std;
-const int maxn =1e5+10;
+const int maxn=3*1e5+10;
 
 //左偏树
 struct node{
     int val,dis;//键值，距离
-    node *Left,*Right;//左右子树
-    node * parent;//父结点
+    node *Right,*Left;//左右子树
+    node *parent;//父结点
 }Nodes[maxn];
 
 int m,n,cnt;
@@ -60,13 +60,12 @@ inline node *insert(node *root,node *p){
 //删除最大结点O(logN)
 inline node *delete_max(node *root){
     node *p=root;
-    root=merge(root->Left,root->Right);
+    root=merge(root->Right,root->Left);
     if(root) root->parent=NULL;
     clear(p);
     return root;
 }
 
-//取得最大值
 inline int get_max(node *root){
     return root->val;
 }
@@ -103,7 +102,7 @@ inline void delete_any(node *x){
     if(p) p->parent=q;
 
     if(q){
-        if(q->Left==x) q->Left=p;
+        if(q->Left) q->Left=p;
         else q->Right=p;
     }
 
@@ -111,7 +110,7 @@ inline void delete_any(node *x){
         int valLeft=-1,valRight=-1;
         if(q->Left) valLeft=q->Left->dis;
         if(q->Right) valRight=q->Right->dis;
-        if(valLeft<valRight) swap(p->Left,p->Right);
+        if(valLeft<valRight) swap(q->Left,q->Right);
         if(valRight+1==q->dis) return;
         q->dis=valRight+1;
         p=q;
@@ -138,7 +137,6 @@ int main(){
             int a,b;
             scanf("%d%d",&a,&b);
             a--;b--;
-
             node *pa=Ltree+a;
             node *pb=Ltree+b;
             while(pa->parent) pa=pa->parent;
